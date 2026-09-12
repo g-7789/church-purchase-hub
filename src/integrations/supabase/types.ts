@@ -14,16 +14,322 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      anexos: {
+        Row: {
+          caminho: string
+          created_at: string
+          descricao: string | null
+          enviado_por: string | null
+          id: string
+          solicitacao_id: string
+          tipo: string
+        }
+        Insert: {
+          caminho: string
+          created_at?: string
+          descricao?: string | null
+          enviado_por?: string | null
+          id?: string
+          solicitacao_id: string
+          tipo?: string
+        }
+        Update: {
+          caminho?: string
+          created_at?: string
+          descricao?: string | null
+          enviado_por?: string | null
+          id?: string
+          solicitacao_id?: string
+          tipo?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "anexos_solicitacao_id_fkey"
+            columns: ["solicitacao_id"]
+            isOneToOne: false
+            referencedRelation: "solicitacoes_compra"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      configuracoes: {
+        Row: {
+          chave: string
+          descricao: string | null
+          updated_at: string
+          valor: number
+        }
+        Insert: {
+          chave: string
+          descricao?: string | null
+          updated_at?: string
+          valor: number
+        }
+        Update: {
+          chave?: string
+          descricao?: string | null
+          updated_at?: string
+          valor?: number
+        }
+        Relationships: []
+      }
+      cotacoes: {
+        Row: {
+          created_at: string
+          fornecedor_id: string | null
+          id: string
+          observacoes: string | null
+          prazo_entrega_dias: number | null
+          registrado_por: string | null
+          solicitacao_id: string
+          valor: number
+        }
+        Insert: {
+          created_at?: string
+          fornecedor_id?: string | null
+          id?: string
+          observacoes?: string | null
+          prazo_entrega_dias?: number | null
+          registrado_por?: string | null
+          solicitacao_id: string
+          valor: number
+        }
+        Update: {
+          created_at?: string
+          fornecedor_id?: string | null
+          id?: string
+          observacoes?: string | null
+          prazo_entrega_dias?: number | null
+          registrado_por?: string | null
+          solicitacao_id?: string
+          valor?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cotacoes_fornecedor_id_fkey"
+            columns: ["fornecedor_id"]
+            isOneToOne: false
+            referencedRelation: "fornecedores"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cotacoes_solicitacao_id_fkey"
+            columns: ["solicitacao_id"]
+            isOneToOne: false
+            referencedRelation: "solicitacoes_compra"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fornecedores: {
+        Row: {
+          categoria: string | null
+          contato: string | null
+          created_at: string
+          id: string
+          nome: string
+          observacoes: string | null
+          whatsapp: string | null
+        }
+        Insert: {
+          categoria?: string | null
+          contato?: string | null
+          created_at?: string
+          id?: string
+          nome: string
+          observacoes?: string | null
+          whatsapp?: string | null
+        }
+        Update: {
+          categoria?: string | null
+          contato?: string | null
+          created_at?: string
+          id?: string
+          nome?: string
+          observacoes?: string | null
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
+      historico_solicitacao: {
+        Row: {
+          comentario: string | null
+          created_at: string
+          id: string
+          solicitacao_id: string
+          status_anterior:
+            | Database["public"]["Enums"]["status_solicitacao"]
+            | null
+          status_novo: Database["public"]["Enums"]["status_solicitacao"]
+          usuario_id: string | null
+        }
+        Insert: {
+          comentario?: string | null
+          created_at?: string
+          id?: string
+          solicitacao_id: string
+          status_anterior?:
+            | Database["public"]["Enums"]["status_solicitacao"]
+            | null
+          status_novo: Database["public"]["Enums"]["status_solicitacao"]
+          usuario_id?: string | null
+        }
+        Update: {
+          comentario?: string | null
+          created_at?: string
+          id?: string
+          solicitacao_id?: string
+          status_anterior?:
+            | Database["public"]["Enums"]["status_solicitacao"]
+            | null
+          status_novo?: Database["public"]["Enums"]["status_solicitacao"]
+          usuario_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "historico_solicitacao_solicitacao_id_fkey"
+            columns: ["solicitacao_id"]
+            isOneToOne: false
+            referencedRelation: "solicitacoes_compra"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          nome: string
+          setor: string
+          telefone: string | null
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          nome?: string
+          setor?: string
+          telefone?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          nome?: string
+          setor?: string
+          telefone?: string | null
+        }
+        Relationships: []
+      }
+      solicitacoes_compra: {
+        Row: {
+          aprovado_em: string | null
+          aprovado_por: string | null
+          concluido_em: string | null
+          cotacao_escolhida_id: string | null
+          created_at: string
+          id: string
+          item: string
+          motivo: string | null
+          observacoes: string | null
+          prazo_desejado: string | null
+          quantidade: number
+          recebido_em: string | null
+          recebido_por: string | null
+          solicitante_id: string
+          status: Database["public"]["Enums"]["status_solicitacao"]
+          unidade: string
+          updated_at: string
+          valor_final: number | null
+        }
+        Insert: {
+          aprovado_em?: string | null
+          aprovado_por?: string | null
+          concluido_em?: string | null
+          cotacao_escolhida_id?: string | null
+          created_at?: string
+          id?: string
+          item: string
+          motivo?: string | null
+          observacoes?: string | null
+          prazo_desejado?: string | null
+          quantidade?: number
+          recebido_em?: string | null
+          recebido_por?: string | null
+          solicitante_id: string
+          status?: Database["public"]["Enums"]["status_solicitacao"]
+          unidade?: string
+          updated_at?: string
+          valor_final?: number | null
+        }
+        Update: {
+          aprovado_em?: string | null
+          aprovado_por?: string | null
+          concluido_em?: string | null
+          cotacao_escolhida_id?: string | null
+          created_at?: string
+          id?: string
+          item?: string
+          motivo?: string | null
+          observacoes?: string | null
+          prazo_desejado?: string | null
+          quantidade?: number
+          recebido_em?: string | null
+          recebido_por?: string | null
+          solicitante_id?: string
+          status?: Database["public"]["Enums"]["status_solicitacao"]
+          unidade?: string
+          updated_at?: string
+          valor_final?: number | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role:
+        | "manutencao"
+        | "compras"
+        | "encarregado"
+        | "recebimento"
+        | "financeiro"
+        | "admin"
+      status_solicitacao:
+        | "solicitado"
+        | "em_cotacao"
+        | "aguardando_aprovacao"
+        | "aprovado"
+        | "comprado"
+        | "recebido"
+        | "concluido"
+        | "cancelado"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +456,25 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: [
+        "manutencao",
+        "compras",
+        "encarregado",
+        "recebimento",
+        "financeiro",
+        "admin",
+      ],
+      status_solicitacao: [
+        "solicitado",
+        "em_cotacao",
+        "aguardando_aprovacao",
+        "aprovado",
+        "comprado",
+        "recebido",
+        "concluido",
+        "cancelado",
+      ],
+    },
   },
 } as const
