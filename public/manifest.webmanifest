@@ -1,0 +1,13 @@
+{
+  "name": "Compras Manutenção",
+  "short_name": "Compras",
+  "description": "Gestão de compras do setor de Manutenção da igreja.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f8fa",
+  "theme_color": "#1f6f8b",
+  "icons": [
+    { "src": "/icone-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icone-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
