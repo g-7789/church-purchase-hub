@@ -33,6 +33,48 @@ export async function listarPerfis() {
   return (data ?? []) as { id: string; nome: string; setor: string }[];
 }
 
+export async function listarUsuariosComPapeis() {
+  const [{ data: perfis, error: e1 }, { data: papeis, error: e2 }] = await Promise.all([
+    supabase.from("profiles").select("id, nome, setor, telefone, created_at").order("nome"),
+    supabase.from("user_roles").select("id, user_id, role"),
+  ]);
+  if (e1) throw e1;
+  if (e2) throw e2;
+  const porUsuario = new Map<string, { id: string; role: string }[]>();
+  for (const linha of (papeis ?? []) as { id: string; user_id: string; role: string }[]) {
+    const lista = porUsuario.get(linha.user_id) ?? [];
+    lista.push({ id: linha.id, role: linha.role });
+    porUsuario.set(linha.user_id, lista);
+  }
+  return ((perfis ?? []) as {
+    id: string;
+    nome: string;
+    setor: string;
+    telefone: string | null;
+    created_at: string;
+  }[]).map((p) => ({ ...p, papeis: porUsuario.get(p.id) ?? [] }));
+}
+
+export type LinhaHistorico = {
+  id: string;
+  solicitacao_id: string;
+  status_anterior: string | null;
+  status_novo: string;
+  usuario_id: string | null;
+  comentario: string | null;
+  created_at: string;
+};
+
+export async function listarHistoricoGeral(limite = 200) {
+  const { data, error } = await supabase
+    .from("historico_solicitacao")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(limite);
+  if (error) throw error;
+  return (data ?? []) as LinhaHistorico[];
+}
+
 export async function listarFornecedores() {
   const { data, error } = await supabase
     .from("fornecedores")

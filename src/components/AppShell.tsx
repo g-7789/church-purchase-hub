@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { CalendarCheck, ClipboardList, Store, Settings, LogOut } from "lucide-react";
+import { CalendarCheck, ClipboardList, Store, Settings, LogOut, ShieldCheck } from "lucide-react";
 import type { ReactNode } from "react";
 import { useSessao } from "@/hooks/useSessao";
 import { PAPEL_LABEL } from "@/lib/dominio";
@@ -12,9 +12,12 @@ const itens = [
   { to: "/configuracoes", label: "Ajustes", icone: Settings },
 ] as const;
 
+const itemAdmin = { to: "/admin", label: "Admin", icone: ShieldCheck } as const;
+
 export function AppShell({ titulo, children }: { titulo: string; children: ReactNode }) {
-  const { perfil, papeis, sair } = useSessao();
+  const { perfil, papeis, sair, temPapel } = useSessao();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const navegacao = temPapel("admin") ? [...itens, itemAdmin] : [...itens];
 
   return (
     <div className="min-h-screen bg-background pb-20">
@@ -36,8 +39,11 @@ export function AppShell({ titulo, children }: { titulo: string; children: React
       <main className="mx-auto max-w-3xl px-4 py-4">{children}</main>
 
       <nav className="fixed inset-x-0 bottom-0 z-10 border-t border-border bg-card">
-        <div className="mx-auto grid max-w-3xl grid-cols-4">
-          {itens.map(({ to, label, icone: Icone }) => {
+        <div
+          className="mx-auto grid max-w-3xl"
+          style={{ gridTemplateColumns: `repeat(${navegacao.length}, minmax(0, 1fr))` }}
+        >
+          {navegacao.map(({ to, label, icone: Icone }) => {
             const ativo = pathname.startsWith(to);
             return (
               <Link
